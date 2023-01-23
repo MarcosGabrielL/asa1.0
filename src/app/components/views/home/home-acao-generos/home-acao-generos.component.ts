@@ -3,7 +3,7 @@ import { OwlOptions } from 'ngx-owl-carousel-o';
 import { Component, OnInit, ViewEncapsulation, Input } from '@angular/core';
 import { HomeGeralFilmesService } from '../home-geral-filmes/home-geral-filmes.service';
 import { map } from 'rxjs/operators';
-import { Result} from '../home-geral-filmes/result.model';
+import { ResultSeries} from '../home-geral-filmes/result.model';
 import { Root } from '../home-geral-filmes/root.model';
 
 @Component({
@@ -16,7 +16,7 @@ export class HomeAcaoGenerosComponent {
   @Input()
      genero: string = "";
      theTradingString: string = "";
-     result: Result[] = [];
+     result: ResultSeries[] = [];
      root: Root[] = [];
   
       m1 = true;
@@ -84,6 +84,7 @@ export class HomeAcaoGenerosComponent {
             this.theTradingString = "";
             let cont = 0;
         this.result.forEach( (a) => {
+          
                                 this.theTradingString = this.theTradingString.concat
                             ("<li>"+
                     "<div class='movie'>"+
@@ -92,7 +93,7 @@ export class HomeAcaoGenerosComponent {
                                 "<img src='https://image.tmdb.org/t/p/w300"+a.poster_path+"' class='movie__poster'>"+
                             "</a>" +
                        " <figcaption><span class='movie__vote'>"+a.vote_average+"</span></figcaption>"+
-                          "<h2 class='movie__title'>"+a.title+"</h2>"+
+                          "<h2 class='movie__title'>"+a.name+"</h2>"+
                       " </figure>"+
                     "</div>"+
                  "</li>");
