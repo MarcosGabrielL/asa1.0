@@ -60,6 +60,7 @@ import { SeriePageComponent } from './components/views/serie/serie-page/serie-pa
 import { HomeAcaoSerieComponent } from './components/views/home/home-acao-serie/home-acao-serie.component';
 import { HomeAcaoGenerosComponent } from './components/views/home/home-acao-generos/home-acao-generos.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,

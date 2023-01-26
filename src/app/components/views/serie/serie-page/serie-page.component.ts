@@ -389,5 +389,7 @@ this.number_of_seasons = +Object.values(resposta)[16];
     sanitize(url:any){
     return this.sanitizer.bypassSecurityTrustUrl(url);
 }
+
+
 	
 }

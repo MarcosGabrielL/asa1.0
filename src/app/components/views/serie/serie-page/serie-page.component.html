@@ -1741,7 +1741,17 @@ div.overlay-blue:hover {
 		</div>
 	</section>
 	
-	<app-ads-horizontal></app-ads-horizontal>
+	<!--<app-ads-horizontal width="100vw" height="320"
+     type="adsense"
+     data-ad-client="ca-pub-8593839440328483"
+     data-ad-slot="8801602560"
+     data-auto-format="rspv"
+     data-full-width="">
+  <div overflow=""></div></app-ads-horizontal>-->
+  <ng2-adsense
+  [adClient]="'ca-pub-8593839440328483'"
+  [adSlot]="8801602560">
+</ng2-adsense>
 	
 	
 	<!-- Comentarios -->
