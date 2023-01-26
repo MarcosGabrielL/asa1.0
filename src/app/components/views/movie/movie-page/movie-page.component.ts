@@ -351,7 +351,7 @@ export class MoviePageComponent implements OnInit {
             this.moviedetails = resposta;
             console.log(resposta);
               
-				this.service.GetTorrentsDublado(this.tituloString,  ""+Object.values(resposta)[21] ).subscribe((result)=> {
+				this.service.GetTorrentsDublado(1, 1, this.tituloString,  ""+Object.values(resposta)[21] ).subscribe((result)=> {
 				       this.Torrents = Object.values(result);
 				        //console.log("This.Torrentes" +this.Torrents);
 					this.showcomentarios();

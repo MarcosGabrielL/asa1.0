@@ -2,7 +2,7 @@ import { OwlOptions,CarouselModule } from 'ngx-owl-carousel-o';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { HomeGeralFilmesService } from '../home/home-geral-filmes/home-geral-filmes.service';
 import { map } from 'rxjs/operators';
-import { Result} from '../home/home-geral-filmes/result.model';
+import { Result, ResultSeries} from '../home/home-geral-filmes/result.model';
 import { Root } from '../home/home-geral-filmes/root.model';
 import { Router, ActivatedRoute } from "@angular/router";
 @Component({
@@ -17,7 +17,7 @@ export class HomeSerieComponent implements OnInit {
     result: Result[] = [];
     resultUpcoming: Result[] = [];
     resultLatest: Result[] = [];
-    resultTrading: Result[] = [];
+    resultTrading: ResultSeries[] = [];
     root: Root[] = [];
     rootUpComing: Root[] = [];
     rootLatest: Root[] = [];
@@ -44,28 +44,23 @@ export class HomeSerieComponent implements OnInit {
     GetTrandingTodayTv(){
         this.service.GetTrandingTodayTv().subscribe((resposta) => {
             this.rootTrading = resposta;
-            //console.log(resposta); 
+            
+            console.log(resposta); 
             const firstValue = Object.values(this.rootTrading)[1];
+      
             this.resultTrading = Object.values(firstValue);
             //console.log(this.resultLatest);
-            //this.showTrading();
-             this.service.GetTrandingTodayTvPAge2().subscribe((resposta) => {
-            this.rootTrading = resposta;
-            //console.log(resposta); 
-            const firstValue = Object.values(this.rootTrading)[1];
-            this.resultTrading = this.resultTrading.concat(Object.values(firstValue));
-            //console.log(this.resultLatest);
-            this.showTrading();
-            });
+               this.showTrading();
             }); 
     }
     
     showTrading(){
             this.theTradingString = "";
+            
+            console.log("this.resultTrading"+this.resultTrading[0].original_title);
             let cont = 0;
         this.resultTrading.forEach( (a) => {
-                    if(cont ==0){
-                        }else{
+                   
                                 this.theTradingString = this.theTradingString.concat
                             ("<li>"+
                     "<div class='movie'>"+
@@ -74,14 +69,14 @@ export class HomeSerieComponent implements OnInit {
                                 "<img src='https://image.tmdb.org/t/p/w300"+a.poster_path+"' class='movie__poster'>"+
                             "</a>" +
                        " <figcaption><span class='movie__vote'>"+a.vote_average+"</span></figcaption>"+
-                          "<h2 class='movie__title'>"+a.title+"</h2>"+
+                          "<h2 class='movie__title'>"+a.original_name+"</h2>"+
                       " </figure>"+
                     "</div>"+
                  "</li>");
 
-                    }
+                  
             
-            cont = cont + 1;
+           
         });
         
     }

@@ -143,6 +143,9 @@ export interface Torrent {
 	  uploaded: String;
 	 tamanho: String;
 	 seeders: String;
+	  tipo: String;
+	  temporada: String;
+	  episodio: String;
 }
 	
 	

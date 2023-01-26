@@ -23,6 +23,7 @@ export interface ResultSeries{
      release_date: String;
      genre_ids: number[];
      original_title: String;
+     original_name: String;
      original_language: String;
      name: String;
      backdrop_path: String;

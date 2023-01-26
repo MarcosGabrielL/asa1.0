@@ -64,12 +64,36 @@ customOptions: OwlOptions = {
   }
 	
 	mostrar: boolean = false;
+	mostrar_t0: boolean = false;
+	mostrar_t2: boolean = false;
+	mostrar_t3: boolean = false;
+	mostrar_t4: boolean = false;
+	mostrar_t5: boolean = false;
+	mostrar_t6: boolean = false;
+	mostrar_t7: boolean = false;
+	mostrar_t8: boolean = false;
+	mostrar_t9: boolean = false;
+	mostrar_t10: boolean = false;
 
   toggle () {
     this.mostrar = !this.mostrar;
   }
+  
+  toggle_mostrar(i: string) {
+		//alert(i);
+		const myAbsolutelyNotNullElement = window.document.getElementById(i)!
+		//alert(myAbsolutelyNotNullElement.style.display)
+		if (myAbsolutelyNotNullElement.style.display === 'none') {
+	      // ✅ Shows element if hidden
+	      myAbsolutelyNotNullElement.style.display = 'block';
+ 		 } else {
+      // ✅ Hides element if shown
+      	myAbsolutelyNotNullElement.style.display = 'none';
+    	}
+	}
 
 	
+
 
   constructor(config: NgbModalConfig, private modalService: NgbModal, private comentarioservice : ComentarioService , private service: MovieService,  private route: ActivatedRoute, private sanitizer: DomSanitizer,
             private authenticationService: LoginService,
@@ -80,7 +104,7 @@ customOptions: OwlOptions = {
 }
               
               
-    
+   
     moviedetails: MovieDetails[] = [];
     Torrents: Torrent[] = [];
     credits: Credits[] = [];
@@ -97,6 +121,7 @@ customOptions: OwlOptions = {
 
     tituloString: string = "";
     tituloString_en: string = "";
+    number_of_seasons: number | undefined;
     release_dateString: string = "";
     imagePath: string = "";
     trailerPath: string = "";
@@ -149,6 +174,7 @@ customOptions: OwlOptions = {
     this.idmovie = this.route.snapshot.paramMap.get("id")!;
     this.GetDetails();
     this.getcomentarios();
+   // this.getTorrents();
     
   }
   
@@ -157,8 +183,8 @@ customOptions: OwlOptions = {
     GetDetails(){
         this.service.GetDetailsTv(this.idmovie).subscribe((resposta) => {
             this.moviedetails = resposta;
-        
-
+      
+this.number_of_seasons = +Object.values(resposta)[16];
                  this.tituloString = ""+Object.values(resposta)[12];
                  this.getTorrents();
                 
@@ -341,20 +367,23 @@ customOptions: OwlOptions = {
 	
 	
 	getTorrents(){
-		/*this.service.GetDetailsEnglish(this.idmovie).subscribe((resposta) => {
+		this.service.GetDetailsTvEnglish(this.idmovie).subscribe((resposta) => {
             this.moviedetails = resposta;
             console.log(resposta);
               
-				this.service.GetTorrentsDublado(this.tituloString,  ""+Object.values(resposta)[21] ).subscribe((result)=> {
+				this.service.GetTorrentsDublado(this.number_of_seasons, 0, this.tituloString, ""+ Object.values(resposta)[12] ).subscribe((result)=> {
 				       this.Torrents = Object.values(result);
 				        //console.log("This.Torrentes" +this.Torrents);
+				        
+				        
+				        
 					this.showcomentarios();
 				        }, () => {
 				        //console.log(result);
 				         }); 
                
             });  
-	 */
+	 
     }
     
     sanitize(url:any){
