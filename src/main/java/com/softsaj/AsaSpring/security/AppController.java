@@ -114,11 +114,13 @@ public ResponseEntity<User> processRegister(@RequestBody User user) {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
  
- @GetMapping("/movies/torrents/{query}/{query_en}")
+ @GetMapping("/movies/torrents/{query}/{query_en}/{type}/{seasons}")
  public ResponseEntity<?> getTorrentsMovie (@PathVariable("query") String query,
-		 @PathVariable("query_en") String query_en) {
+		 									@PathVariable("query_en") String query_en,
+		 									@PathVariable("type") String tipo,
+		 									@PathVariable("seasons") String seasons) {
     int Codido_Category_Movie = 201;
-     return new ResponseEntity<>(new SearchMoviesTorrent().SearchTorrents(query, query_en, Codido_Category_Movie), HttpStatus.OK);
+     return new ResponseEntity<>(new SearchMoviesTorrent().SearchTorrents(seasons, tipo, query, query_en, Codido_Category_Movie), HttpStatus.OK);
  }
 
 }

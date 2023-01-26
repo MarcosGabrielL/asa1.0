@@ -9,6 +9,10 @@ public class Torrent {
 	private String uploaded;
 	private String tamanho;
 	private String seeders;
+	private String tipo;
+	private String temporada;
+	private String episodio;
+	
 	
 	public String getIdioma() {
 		return idioma;
@@ -55,6 +59,24 @@ public class Torrent {
 	public Torrent() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+	public String getTipo() {
+		return tipo;
+	}
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+	public String getTemporada() {
+		return temporada;
+	}
+	public void setTemporada(String temporada) {
+		this.temporada = temporada;
+	}
+	public String getEpisodio() {
+		return episodio;
+	}
+	public void setEpisodio(String episodio) {
+		this.episodio = episodio;
 	}
 	
 	

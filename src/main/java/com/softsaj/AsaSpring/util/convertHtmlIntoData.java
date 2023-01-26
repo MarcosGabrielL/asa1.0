@@ -3,6 +3,8 @@ package com.softsaj.AsaSpring.util;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -22,14 +24,10 @@ public class convertHtmlIntoData {
 		this.response = response;
 	}
 	
-	public List<Torrent>  convert(int language) {
+	public List<Torrent>  convert(int language, String tipo) {
 		List<Torrent> torrents = new ArrayList<>();
-		try {
-			//Remover todos &
-			//Todas as Images
-			//Todas <br/>
-			//Head
-			//Scripts
+		
+		if(tipo.equals("0")) {
 			response.indexOf("<body>");
 			String new_response = response.substring(response.indexOf("<body>"));
 			new_response = new_response.replace("&","-AntesI-")
@@ -58,28 +56,165 @@ public class convertHtmlIntoData {
 			}catch (Exception e) {
 				
 			} 
+			System.out.println("Tamanho Total: "+lista_completa.length());
 			
-			for(int i = 0; i < lista_completa.length() && i<3; i++) {
-				Torrent tor = new Torrent();
+			if(language==0) {//Br
+				for(int i = 0; i < lista_completa.length(); i++) {
+
+					try {
+						JSONArray objeto = lista_completa.getJSONObject(i).getJSONArray("td");
+						//System.err.println("Nome: "+ nome);
+						String nome = objeto.getJSONObject(1).getJSONObject("a").getString("content");
+						if(nome.toLowerCase().contains("dublado".toLowerCase()) || nome.toLowerCase().contains("Dual Audio".toLowerCase()) || nome.toLowerCase().contains("pt-BR".toLowerCase())) {
+
+							Torrent tor = new Torrent();	
+							tor.setName(nome);
+							tor.setUrl(objeto.getJSONObject(3).getJSONObject("nobr").getJSONObject("a").getString("href").toString().replace("-AntesI-","&"));//.getString("content"));
+							tor.setIdioma("pt-BR");
+							
+							Pattern p = Pattern.compile("S0([^,]*)E");
+							Matcher m = p.matcher(tor.getName());
+							if(m.find()) {
+								String Nome = tor.getName().substring(tor.getName().indexOf(m.group(1)));
+								String Temporada = Nome.substring(0,1);
+								System.err.println("Nome: "+ Nome+ "/n" + "Temporada: "+Temporada);
+								tor.setTemporada(Temporada);
+								tor.setEpisodio(Nome.substring(2,4));
+								tor.setTipo("0");
+							}
+							tor.setTamanho(objeto.getJSONObject(4).get("content").toString());
+							tor.setSeeders(objeto.getJSONObject(5).get("content").toString());
+							tor.setType(objeto.getJSONObject(0).getJSONObject("a").get("content").toString().replace("-AntesI-","&").replace("&gt;", ">"));
+							torrents.add(tor);
+							
+						}
+					}catch(Exception e) {
+						logger.error(e.getLocalizedMessage());
+					}
+
+
+				}
+			}
+			if(language==1) {
+			for(int i = 0; i < lista_completa.length() ; i++) {
+			
 				try {
+					Torrent tor = new Torrent();
 					JSONArray objeto = lista_completa.getJSONObject(i).getJSONArray("td");
+					//System.err.println(objeto);
 					tor.setName(objeto.getJSONObject(1).getJSONObject("a").getString("content"));
 					tor.setUrl(objeto.getJSONObject(3).getJSONObject("nobr").getJSONObject("a").getString("href").toString().replace("-AntesI-","&"));//.getString("content"));
-					if(tor.getName().toLowerCase().contains("dublado".toLowerCase()) ||
-					   tor.getName().toLowerCase().contains("Dual Audio".toLowerCase()) || 
-					   tor.getName().toLowerCase().contains("pt-BR".toLowerCase())) {
-						tor.setIdioma("pt-BR");
-					}else if(language==1){
 						tor.setIdioma("en-US");
-					}
+						
+						Pattern p = Pattern.compile("S0([^,]*)E");
+						Matcher m = p.matcher(tor.getName());
+						if(m.find()) {
+							String Nome = tor.getName().substring(tor.getName().indexOf(m.group(1)));
+							String Temporada = Nome.substring(0,1);
+							//System.err.println("Nome: "+ Nome.substring(1,2)+ "\t" + "Temporada: "+Temporada);
+							tor.setTemporada(Temporada);
+							if(Nome.substring(1,2).equals(" ") || Nome.substring(1,2) ==null) {
+								tor.setEpisodio("0");
+							}else {
+							tor.setEpisodio(Nome.substring(2,4));
+							}
+							tor.setTipo("0");
+						}
+						
+						
+						
 					tor.setTamanho(objeto.getJSONObject(4).get("content").toString());
 					tor.setSeeders(objeto.getJSONObject(5).get("content").toString());
 					tor.setType(objeto.getJSONObject(0).getJSONObject("a").get("content").toString().replace("-AntesI-","&").replace("&gt;", ">"));
+					
+					torrents.add(tor);
 				}catch(Exception e) {
 					logger.error(e.getLocalizedMessage());
 				}
-					torrents.add(tor);
+					
 				
+				}
+			}
+			return torrents;
+		}else {
+		try {
+			
+			response.indexOf("<body>");
+			String new_response = response.substring(response.indexOf("<body>"));
+			new_response = new_response.replace("&","-AntesI-")
+					.replace("<br/>", "")
+					.replace("<br>", "")
+					.replace("<img", "");
+			if(new_response.contains("</block>")) {
+
+				new_response = new_response.substring(0,new_response.indexOf("</block>")).replace("<body>","");
+			}else {
+				new_response = new_response.substring(0,new_response.indexOf("</body>")).replace("</block>","");
+			}
+			JSONObject xmlJSONObj = XML.toJSONObject(new_response);
+
+			String jsonPrettyPrintString = xmlJSONObj.toString(4);
+			
+			JSONArray lista_completa = new JSONArray();
+			try {
+			 lista_completa = xmlJSONObj.getJSONArray("div")
+					.getJSONObject(1)
+					.getJSONObject("div")
+					.getJSONObject("table")
+					.getJSONObject("tbody")
+					.getJSONArray("tr");
+			
+			}catch (Exception e) {
+				
+			} 
+			System.out.println("Tamanho Total: "+lista_completa.length());
+			
+			if(language==0) {//Br
+				for(int i = 0,j=0; i < lista_completa.length() && j<3; i++) {
+
+					try {
+						JSONArray objeto = lista_completa.getJSONObject(i).getJSONArray("td");
+						String nome = objeto.getJSONObject(1).getJSONObject("a").getString("content");
+						if(nome.toLowerCase().contains("dublado".toLowerCase()) || nome.toLowerCase().contains("Dual Audio".toLowerCase()) || nome.toLowerCase().contains("pt-BR".toLowerCase())) {
+
+							Torrent tor = new Torrent();	
+							tor.setName(nome);
+							tor.setUrl(objeto.getJSONObject(3).getJSONObject("nobr").getJSONObject("a").getString("href").toString().replace("-AntesI-","&"));//.getString("content"));
+							tor.setIdioma("pt-BR");
+							tor.setTamanho(objeto.getJSONObject(4).get("content").toString());
+							tor.setSeeders(objeto.getJSONObject(5).get("content").toString());
+							tor.setType(objeto.getJSONObject(0).getJSONObject("a").get("content").toString().replace("-AntesI-","&").replace("&gt;", ">"));
+							torrents.add(tor);
+							j++;
+						}
+					}catch(Exception e) {
+						logger.error(e.getLocalizedMessage());
+					}
+
+
+				}
+			}
+			if(language==1) {
+			for(int i = 0, j=0; i < lista_completa.length() && j<3; i++) {
+			
+				try {
+					Torrent tor = new Torrent();
+					JSONArray objeto = lista_completa.getJSONObject(i).getJSONArray("td");
+					tor.setName(objeto.getJSONObject(1).getJSONObject("a").getString("content"));
+					tor.setUrl(objeto.getJSONObject(3).getJSONObject("nobr").getJSONObject("a").getString("href").toString().replace("-AntesI-","&"));//.getString("content"));
+						tor.setIdioma("en-US");
+						
+					tor.setTamanho(objeto.getJSONObject(4).get("content").toString());
+					tor.setSeeders(objeto.getJSONObject(5).get("content").toString());
+					tor.setType(objeto.getJSONObject(0).getJSONObject("a").get("content").toString().replace("-AntesI-","&").replace("&gt;", ">"));
+					j++;
+					torrents.add(tor);
+				}catch(Exception e) {
+					logger.error(e.getLocalizedMessage());
+				}
+					
+				
+				}
 			}
 			return torrents;
 			
@@ -89,7 +224,7 @@ public class convertHtmlIntoData {
 			return torrents;
 		}
 		
-		
+		}
             
 	}
 	

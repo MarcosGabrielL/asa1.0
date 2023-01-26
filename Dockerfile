@@ -4,7 +4,7 @@ WORKDIR /usr/src/app
  
 COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
-RUN sed -i 's/\r$//' mvnw
+RUN RUN ./mvnw package
 #RUN /bin/sh ./mvnw dependency:go-offline
  
 COPY src ./src
