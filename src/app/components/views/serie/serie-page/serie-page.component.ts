@@ -1,5 +1,5 @@
 import { OwlOptions,CarouselModule } from 'ngx-owl-carousel-o';
-import { Component, OnInit, ViewEncapsulation,ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation,ViewChild, ElementRef, Input } from '@angular/core';
 import { Type } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Pipe, PipeTransform, NgModule} from '@angular/core';
@@ -37,6 +37,8 @@ import {NgbModal, ModalDismissReasons, NgbModalConfig,NgbActiveModal} from '@ng-
     providers: [NgbModalConfig, NgbModal],
 })
 export class SeriePageComponent {
+	
+	
 	
 customOptions: OwlOptions = {
     loop: true,
