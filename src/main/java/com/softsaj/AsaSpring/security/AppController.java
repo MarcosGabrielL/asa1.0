@@ -11,11 +11,9 @@ package com.softsaj.AsaSpring.security;
  */
 import com.softsaj.AsaSpring.models.Cinefilo;
 import com.softsaj.AsaSpring.models.Torrent;
-import com.softsaj.AsaSpring.security.UserRepository;
 import com.softsaj.AsaSpring.security.AuthRequest;
 import com.softsaj.AsaSpring.security.User;
 import com.softsaj.AsaSpring.security.JwtUtil;
-import com.softsaj.AsaSpring.services.CinefiloService;
 import com.softsaj.AsaSpring.services.SearchMoviesTorrent;
 import com.softsaj.AsaSpring.util.convertHtmlIntoData;
 
@@ -37,10 +35,7 @@ import org.springframework.http.ResponseEntity;
 @RestController
 public class AppController {
     
-    @Autowired
-    private UserRepository userRepo;
-    @Autowired
-    private CinefiloService vs;
+   
     @Autowired
     private JwtUtil jwtUtil;
     @Autowired
@@ -80,12 +75,12 @@ public class AppController {
     }
 
 @PostMapping("/process_register")
-public ResponseEntity<User> processRegister(@RequestBody User user) {
+public ResponseEntity<?> processRegister(@RequestBody User user) {
    // BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     //String encodedPassword = passwordEncoder.encode(user.getPassword());
     //user.setPassword(encodedPassword);
      
-    User newUser = userRepo.save(user);
+  //  User newUser = userRepo.save(user);
     
      //Cria Cinefilo
     Cinefilo cinefilo = new Cinefilo();
@@ -93,25 +88,25 @@ public ResponseEntity<User> processRegister(@RequestBody User user) {
     cinefilo.setId(user.getId());
     cinefilo.setUsuario(user.getFirstName());
     cinefilo.setNome(user.getFirstName()+" "+user.getLastName());
-    vs.addCinefilo(cinefilo);
+  //  vs.addCinefilo(cinefilo);
     
      
-    return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+    return new ResponseEntity<>("newUser", HttpStatus.CREATED);
 }
 
     @GetMapping("/users")
     public String listUsers(Model model) {
-    List<User> listUsers = userRepo.findAll();
-    model.addAttribute("listUsers", listUsers);
+   // List<User> listUsers = userRepo.findAll();
+    //model.addAttribute("listUsers", listUsers);
      
     
     return "users";
 }
 
  @GetMapping("/user/{email}")
-    public ResponseEntity<User> getUserByEmail (@PathVariable("email") String email) {
-        User user = userRepo.findByEmail(email);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+    public ResponseEntity<?> getUserByEmail (@PathVariable("email") String email) {
+       // User user = userRepo.findByEmail(email);
+        return new ResponseEntity<>("", HttpStatus.OK);
     }
  
  @GetMapping("/movies/torrents/{query}/{query_en}/{type}/{seasons}")

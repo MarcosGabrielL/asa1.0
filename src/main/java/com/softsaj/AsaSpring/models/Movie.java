@@ -6,17 +6,12 @@
 package com.softsaj.AsaSpring.models;
 
 import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
 /**
  *
  * @author Marcos
  */
-@Entity
+
 public class Movie implements Serializable {
     
 private String Poster_Link;
@@ -37,8 +32,7 @@ private String Star5;
 private String No_of_Votes;
 private String Gross;
 private String Rate;
-@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY) 
+
 private Integer id;
 private String TMDBId;
 private String Elenco;

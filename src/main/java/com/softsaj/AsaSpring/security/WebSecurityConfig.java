@@ -9,8 +9,6 @@ package com.softsaj.AsaSpring.security;
  *
  * @author Marcos
  */
-import com.softsaj.AsaSpring.security.JwtFilter;
-import com.softsaj.AsaSpring.security.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,16 +34,11 @@ import org.springframework.web.filter.CorsFilter;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     
     
-    @Autowired
-    private CustomUserDetailsService userDetailsService;
-
-    @Autowired
-    private JwtFilter jwtFilter;
-    
+   
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService);
+      //  auth.userDetailsService(userDetailsService);
     }
     @Bean
     public PasswordEncoder passwordEncoder(){
@@ -74,7 +67,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll().anyRequest().authenticated()
                 .and().exceptionHandling().and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);;
+       // http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);;
     }
      
 }

@@ -6,33 +6,25 @@
 package com.softsaj.AsaSpring.models;
 
 import java.util.Objects;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 /**
  *
- * @author Marcos
+ * //author Marcos
  */
-@Entity
+//Entity
 public class Comentario{
     
-@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)    
+//Id
+//GeneratedValue(strategy = GenerationType.IDENTITY)    
 private int id;
-@Column(nullable = false)
+//Column(nullable = false)
 private String critica;
-@Column(nullable = false)
+//Column(nullable = false)
 private String idmovie;
-@Column(nullable = false)
+//Column(nullable = false)
 private String idcinefilo;
-@Column(nullable = false)
+//Column(nullable = false)
 private String Data;
-@Column(nullable = false)
+//Column(nullable = false)
 private String Avaliação;
 private String curtidas_1_estrela;
 private String curtidas_2_estrela;
@@ -156,14 +148,14 @@ private String score;
         this.score = score;
     }
 
-    @Override
+    //Override
     public int hashCode() {
         int hash = 7;
         hash = 79 * hash + Objects.hashCode(this.id);
         return hash;
     }
 
-    @Override
+    //Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
