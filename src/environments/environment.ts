@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-   baseUrl : 'http://localhost:8080'
+   baseUrl : 'https://asa1-0-back-prod-cloud1-5ah5aq.mo5.mogenius.io/'
 };
 
 /*
