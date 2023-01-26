@@ -1,13 +1,14 @@
-FROM openjdk:8-jdk-alpine
- 
-WORKDIR /usr/src/app
- 
-COPY .mvn/ .mvn
-COPY mvnw pom.xml ./
-RUN RUN ./mvnw package
-#RUN /bin/sh ./mvnw dependency:go-offline
- 
-COPY src ./src
-COPY src/main/resources/application.properties  ./src/main/resources/application.properties
+# build stage
+FROM node:lts-alpine as build-stage
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build
 
-CMD ["./mvnw", "spring-boot:run"]
+# production stage
+FROM nginxinc/nginx-unprivileged:stable-alpine as production-stage
+COPY --from=build-stage /app/dist/angular-app /usr/share/nginx/html
+EXPOSE 8080
+USER 101
+CMD ["nginx", "-g", "daemon off;"]
